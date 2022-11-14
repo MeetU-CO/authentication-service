@@ -23,7 +23,7 @@ describe('SignupAuthService', () => {
   const mockUserRepository = {
     add: jest.fn(async (user) => user),
     getByEmail: jest.fn(async (email) =>
-      email === mockUserInDB ? mockUserInDB : null,
+      email === mockUserInDB.email ? mockUserInDB : null,
     ),
   };
 
