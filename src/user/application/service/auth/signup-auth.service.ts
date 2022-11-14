@@ -32,7 +32,7 @@ export class SignupAuthService {
       email: userCreated.email,
       name: userCreated.name,
       roles: userCreated.roles,
-      notification: userCreated.notifications,
+      notifications: userCreated.notifications,
     };
   }
 }
