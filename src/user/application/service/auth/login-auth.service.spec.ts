@@ -5,9 +5,9 @@ import { WrongPasswordOrEmailException } from 'src/user/domain/exception/wrong-p
 describe('LoginAuthService', () => {
   const getUserServiceMock = jest
     .spyOn(GetUserService.prototype, 'run')
-    .mockImplementation(async (email) => mockUserInDB);
+    .mockImplementation(async () => mockUserInDB);
 
-  const mockEncrypterReturnTrue = {
+  const mockEncrypter = {
     compare: jest.fn(async (password, hash) => password === hash),
     encrypt: jest.fn(async (password) => password),
   };
@@ -28,7 +28,7 @@ describe('LoginAuthService', () => {
   };
 
   const loginAuthService: LoginAuthService = new LoginAuthService(
-    mockEncrypterReturnTrue,
+    mockEncrypter,
     mockUserRepository,
   );
 
