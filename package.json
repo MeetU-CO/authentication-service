@@ -73,6 +73,26 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "test-config",
+      "interface",
+      "domain/dto",
+      "domain/exception",
+      "domain/repository",
+      "domain/utils/encrypter",
+      "jestGlobalMocks.ts",
+      ".module.ts",
+      ".mock.ts",
+      "src/main.ts",
+      "repository/model",
+      "mongodb/config"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 90
+      }
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
