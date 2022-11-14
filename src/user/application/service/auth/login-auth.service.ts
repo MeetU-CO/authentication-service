@@ -31,7 +31,7 @@ export class LoginAuthService {
       email: user.email,
       name: user.name,
       roles: user.roles,
-      notification: user.notifications,
+      notifications: user.notifications,
     };
   }
 }

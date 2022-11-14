@@ -7,5 +7,5 @@ export interface AuthResponseDTO {
   token?: string;
   password?: undefined | null;
   roles?: Roles[];
-  notification?: Notification[];
+  notifications?: Notification[];
 }
