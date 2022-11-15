@@ -1,9 +1,11 @@
 import { Controller, Post, Body } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { SignupAuthDTO } from 'src/user/domain/dto/signup-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDTO } from 'src/user/domain/dto/login-auth.dto';
 
+@ApiTags('authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
