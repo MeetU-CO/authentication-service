@@ -1,7 +1,7 @@
 import { HttpCode } from '../repository/entity/http-code.entity';
 
 export class UserNotFoundException extends Error {
-  public readonly httpCode?: HttpCode;
+  public readonly statusCode?: HttpCode;
   public readonly isOperational: boolean;
 
   constructor() {
@@ -9,7 +9,7 @@ export class UserNotFoundException extends Error {
     Object.setPrototypeOf(this, new.target.prototype);
 
     this.isOperational = true;
-    this.httpCode = HttpCode.NOT_FOUND;
+    this.statusCode = HttpCode.NOT_FOUND;
 
     Error.captureStackTrace(this);
   }
