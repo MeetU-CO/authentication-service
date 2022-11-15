@@ -14,6 +14,6 @@ export class MongoUserRepository implements UserRepository {
     return this.userModel.create(user);
   }
   async getByEmail(email: string): Promise<User | null> {
-    return this.userModel.findOne({ email: email }).exec();
+    return this.userModel.findOne({ email: { $eq: email } }).exec();
   }
 }
