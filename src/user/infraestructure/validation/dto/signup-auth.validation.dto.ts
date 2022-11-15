@@ -6,7 +6,8 @@ export class SignupAuthDTOValidation implements SignupAuthDTO {
   @IsNotEmpty()
   email: string;
 
-  password?: string | undefined;
+  @IsString()
+  password: string | undefined;
 
   @IsString()
   name: string;
