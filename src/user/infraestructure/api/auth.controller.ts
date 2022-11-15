@@ -1,8 +1,8 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { SignupAuthDTO } from 'src/user/domain/dto/signup-auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import { LoginAuthDTO } from 'src/user/domain/dto/login-auth.dto';
+import { SignupAuthDTOValidation } from '../validation/dto/signup-auth.validation.dto';
+import { LoginAuthDTOValidation } from '../validation/dto/login-auth.validation.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +12,7 @@ export class AuthController {
   ) {}
 
   @Post('signup')
-  async signup(@Body() signupAuthDTO: SignupAuthDTO) {
+  async signup(@Body() signupAuthDTO: SignupAuthDTOValidation) {
     const userCreated = await this.userService.signup(signupAuthDTO);
     const payload = {
       email: userCreated.email,
@@ -24,7 +24,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() loginAuthDTO: LoginAuthDTO) {
+  async login(@Body() loginAuthDTO: LoginAuthDTOValidation) {
     const userLogged = await this.userService.login(loginAuthDTO);
     const payload = {
       email: userLogged.email,
