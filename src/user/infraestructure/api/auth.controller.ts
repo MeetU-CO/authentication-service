@@ -58,4 +58,23 @@ export class AuthController {
     const token = await this.jwtAuthService.signAsync(payload);
     return { ...user, token };
   }
+
+  @Get('microsoft')
+  @UseGuards(AuthGuard('azure-ad'))
+  async microsoftLogin(@Req() _req: Request): Promise<any> {
+    return;
+  }
+
+  @Get('microsoft/redirect')
+  @UseGuards(AuthGuard('azure-ad'))
+  async microsoftAuthRedirect(@Req() req: Request) {
+    const user = await this.userService.oauthLogin(req.user as SignupAuthDTO);
+    const payload = {
+      email: user.email,
+      name: user.name,
+      roles: user.roles ?? [],
+    };
+    const token = await this.jwtAuthService.signAsync(payload);
+    return { ...user, token };
+  }
 }
