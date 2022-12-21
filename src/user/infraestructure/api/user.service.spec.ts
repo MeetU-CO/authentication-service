@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginAuthService } from 'src/user/application/service/auth/login-auth.service';
 import { SignupAuthService } from 'src/user/application/service/auth/signup-auth.service';
+import { OauthService } from '../../application/service/auth/oauth.service';
+import { UserNotFoundException } from '../../domain/exception/user-not-found.exception';
 import { Encrypter } from '../implementation/encrypter/bcrypjs.encrypter';
 import { MongoUserRepository } from '../implementation/mongodb/repository/mongo-user.repository';
 import { UserService } from './user.service';
@@ -38,6 +40,10 @@ describe('UserService', () => {
     .spyOn(SignupAuthService.prototype, 'run')
     .mockImplementation(async () => authResponseDTO);
 
+  jest
+    .spyOn(OauthService.prototype, 'run')
+    .mockImplementation(async () => authResponseDTO);
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -63,5 +69,17 @@ describe('UserService', () => {
 
   test('UserService should return authResponse when login is successful', async () => {
     expect(await service.login(loginDTO)).toStrictEqual(authResponseDTO);
+  });
+
+  test('UserService should return authResponse when oauthLogin is successful', async () => {
+    expect(await service.oauthLogin(signupDTO)).toStrictEqual(authResponseDTO);
+  });
+
+  test('UserService should throw UserNotFoundException when oauthLogin is empty', async () => {
+    try {
+      await service.oauthLogin();
+    } catch (error) {
+      expect(error).toBeInstanceOf(UserNotFoundException);
+    }
   });
 });
