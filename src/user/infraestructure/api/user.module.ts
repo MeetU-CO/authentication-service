@@ -9,6 +9,8 @@ import {
 import { MongoUserRepository } from '../implementation/mongodb/repository/mongo-user.repository';
 import { Encrypter } from '../implementation/encrypter/bcrypjs.encrypter';
 import { JwtModule } from '@nestjs/jwt';
+import { GoogleStrategy } from '../common/strategy/google.strategy';
+import { MicrosoftStrategy } from '../common/strategy/microsoft.strategy';
 
 @Module({
   imports: [
@@ -24,6 +26,12 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [AuthController],
-  providers: [UserService, MongoUserRepository, Encrypter],
+  providers: [
+    UserService,
+    MongoUserRepository,
+    Encrypter,
+    GoogleStrategy,
+    MicrosoftStrategy,
+  ],
 })
 export class UserModule {}

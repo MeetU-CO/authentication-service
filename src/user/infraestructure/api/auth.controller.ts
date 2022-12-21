@@ -1,9 +1,12 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { JwtService } from '@nestjs/jwt';
 import { SignupAuthDTOValidation } from '../validation/dto/signup-auth.validation.dto';
 import { LoginAuthDTOValidation } from '../validation/dto/login-auth.validation.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { SignupAuthDTO } from '../../domain/dto/signup-auth.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -35,5 +38,43 @@ export class AuthController {
     };
     const token = await this.jwtAuthService.signAsync(payload);
     return { ...userLogged, token };
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleLogin(@Req() _req: Request): Promise<any> {
+    return;
+  }
+
+  @Get('google/redirect')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req: Request) {
+    const user = await this.userService.oauthLogin(req.user as SignupAuthDTO);
+    const payload = {
+      email: user.email,
+      name: user.name,
+      roles: user.roles ?? [],
+    };
+    const token = await this.jwtAuthService.signAsync(payload);
+    return { ...user, token };
+  }
+
+  @Get('microsoft')
+  @UseGuards(AuthGuard('azure-ad'))
+  async microsoftLogin(@Req() _req: Request): Promise<any> {
+    return;
+  }
+
+  @Get('microsoft/redirect')
+  @UseGuards(AuthGuard('azure-ad'))
+  async microsoftAuthRedirect(@Req() req: Request) {
+    const user = await this.userService.oauthLogin(req.user as SignupAuthDTO);
+    const payload = {
+      email: user.email,
+      name: user.name,
+      roles: user.roles ?? [],
+    };
+    const token = await this.jwtAuthService.signAsync(payload);
+    return { ...user, token };
   }
 }
