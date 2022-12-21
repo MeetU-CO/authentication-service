@@ -32,9 +32,14 @@ describe('AuthController', () => {
     name: 'user',
   };
 
+  const requestMockUser = {
+    user: {},
+  };
+
   const mockUserService = {
     login: jest.fn(async () => authResponseDTO),
     signup: jest.fn(async () => authResponseDTO),
+    oauthLogin: jest.fn(async () => authResponseDTO),
   };
 
   beforeEach(async () => {
@@ -66,5 +71,27 @@ describe('AuthController', () => {
     expect(await controller.login(loginAuthDTO)).toStrictEqual(
       authResponseExpected,
     );
+  });
+
+  test('AuthController should return null when googleLogin is successful', async () => {
+    expect(await controller.googleLogin(null as any)).toStrictEqual(undefined);
+  });
+
+  test('AuthController should return null when microsoftLogin is successful', async () => {
+    expect(await controller.microsoftLogin(null as any)).toStrictEqual(
+      undefined,
+    );
+  });
+
+  test('AuthController should return authResponse when googleAuthRedirect is successful', async () => {
+    expect(
+      await controller.googleAuthRedirect(requestMockUser as any),
+    ).toStrictEqual(authResponseExpected);
+  });
+
+  test('AuthController should return authResponse when microsoftAuthRedirect is successful', async () => {
+    expect(
+      await controller.microsoftAuthRedirect(requestMockUser as any),
+    ).toStrictEqual(authResponseExpected);
   });
 });

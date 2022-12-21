@@ -98,7 +98,8 @@
       ".mock.ts",
       "src/main.ts",
       "repository/model",
-      "mongodb/config"
+      "mongodb/config",
+      "infraestructure/common/strategy"
     ],
     "coverageThreshold": {
       "global": {
