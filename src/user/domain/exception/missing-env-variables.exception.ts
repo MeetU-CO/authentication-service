@@ -4,8 +4,8 @@ export class MissingEnvVariablesException extends Error {
   public readonly statusCode?: HttpCode;
   public readonly isOperational: boolean;
 
-  constructor() {
-    super('Missing env variables to boostrap server');
+  constructor(name: string) {
+    super(`Missing env variable ${name} to boostrap server`);
     Object.setPrototypeOf(this, new.target.prototype);
 
     this.isOperational = false;
