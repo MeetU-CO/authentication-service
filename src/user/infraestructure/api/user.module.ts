@@ -8,9 +8,12 @@ import {
 } from '../implementation/mongodb/repository/model/user.model';
 import { MongoUserRepository } from '../implementation/mongodb/repository/mongo-user.repository';
 import { Encrypter } from '../implementation/encrypter/bcrypjs.encrypter';
+import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from '../common/strategy/google.strategy';
 import { MicrosoftStrategy } from '../common/strategy/microsoft.strategy';
+import { JwtStrategy } from '../common/strategy/jwt.strategy';
+import { JwtConfigService } from '../implementation/jwt/config';
 
 @Module({
   imports: [
@@ -20,18 +23,20 @@ import { MicrosoftStrategy } from '../common/strategy/microsoft.strategy';
         schema: UserSchema,
       },
     ]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '30m' },
+    PassportModule,
+    JwtModule.registerAsync({
+      useClass: JwtConfigService,
     }),
   ],
   controllers: [AuthController],
   providers: [
+    JwtConfigService,
     UserService,
     MongoUserRepository,
     Encrypter,
     GoogleStrategy,
     MicrosoftStrategy,
+    JwtStrategy,
   ],
 })
 export class UserModule {}
