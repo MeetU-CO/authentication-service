@@ -1,5 +1,7 @@
+import { registerAs } from '@nestjs/config';
+
 const jwtEnvConfig = () => ({
   secret: process.env.JWT_SECRET,
 });
 
-export default jwtEnvConfig;
+export default registerAs('jwtOptions', jwtEnvConfig);

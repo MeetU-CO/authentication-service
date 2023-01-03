@@ -6,16 +6,16 @@ import throwExpression from '../../../../domain/utils/throw-expression';
 
 @Injectable()
 export class JwtConfigService implements JwtOptionsFactory {
-  public static jwtOptions: JwtModuleOptions;
+  private static jwtOptions: JwtModuleOptions;
   constructor(private configService: ConfigService) {}
   createJwtOptions(): JwtModuleOptions {
     JwtConfigService.jwtOptions = {
-      secretOrPrivateKey:
-        this.configService.get<string>('secret') ??
+      secret:
+        this.configService.get<string>('jwtOptions.secret') ??
         throwExpression(new MissingEnvVariablesException('secret of jwt')),
       signOptions: { expiresIn: '30m' },
     };
-    return JwtConfigService.jwtOptions;
+    return this.getJwtOptions();
   }
 
   getJwtOptions(): JwtModuleOptions {
