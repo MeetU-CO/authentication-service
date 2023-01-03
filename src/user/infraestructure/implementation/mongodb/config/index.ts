@@ -1,42 +1,66 @@
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import {
+  MongooseModuleOptions,
+  MongooseOptionsFactory,
+} from '@nestjs/mongoose';
 import { MissingEnvVariablesException } from 'src/user/domain/exception/missing-env-variables.exception';
+import throwExpression from '../../../../domain/utils/throw-expression';
+import { MongoUrlBuilder } from './mongo-url-builder.config';
+import { MongoConnectionParameters } from './parameters.config';
 
-interface MongoConnectionParameters {
-  databaseName: string;
-  rootUsername: string;
-  rootPassword: string;
-  port: string;
-  hostname: string;
+@Injectable()
+export class MongooseConfigService implements MongooseOptionsFactory {
+  private static mongooseModuleOptions: MongooseModuleOptions;
+  private mongoUrlBuilder: MongoUrlBuilder;
+  constructor(private configService: ConfigService) {
+    this.mongoUrlBuilder = new MongoUrlBuilder();
+    MongooseConfigService.mongooseModuleOptions?.uri ?? this.setup();
+  }
+
+  createMongooseOptions(): MongooseModuleOptions {
+    return this.getMongooseOptions();
+  }
+
+  getMongooseOptions(): MongooseModuleOptions {
+    return MongooseConfigService.mongooseModuleOptions;
+  }
+
+  setup() {
+    const mongoConfig =
+      this.configService.get<MongoConnectionParameters>('mongoose');
+    if (mongoConfig?.urlConnection !== undefined) {
+      MongooseConfigService.mongooseModuleOptions = {
+        uri: mongoConfig.urlConnection,
+      };
+      return;
+    }
+
+    const url = this.mongoUrlBuilder
+      .setUsername(
+        mongoConfig?.rootUsername ??
+          throwExpression(new MissingEnvVariablesException('mongodb username')),
+      )
+      .setPassword(
+        mongoConfig?.rootPassword ??
+          throwExpression(new MissingEnvVariablesException('mongodb password')),
+      )
+      .setHostname(
+        mongoConfig?.hostname ??
+          throwExpression(new MissingEnvVariablesException('mongodb hostname')),
+      )
+      .setPort(
+        mongoConfig?.port ??
+          throwExpression(new MissingEnvVariablesException('mongodb port')),
+      )
+      .setDatabaseName(
+        mongoConfig?.databaseName ??
+          throwExpression(
+            new MissingEnvVariablesException('mongodb database name'),
+          ),
+      )
+      .build();
+
+    MongooseConfigService.mongooseModuleOptions = { uri: url };
+  }
 }
-
-const urlConnectionBuilder = (
-  mongoConnectionParameters: Partial<MongoConnectionParameters>,
-): string => {
-  if (
-    !mongoConnectionParameters.rootUsername ||
-    !mongoConnectionParameters.rootPassword ||
-    !mongoConnectionParameters.hostname ||
-    !mongoConnectionParameters.port ||
-    !mongoConnectionParameters.databaseName
-  ) {
-    throw new MissingEnvVariablesException();
-  }
-  return `mongodb://${mongoConnectionParameters.rootUsername}:${mongoConnectionParameters.rootPassword}@${mongoConnectionParameters.hostname}:${mongoConnectionParameters.port}/${mongoConnectionParameters.databaseName}?authSource=admin`;
-};
-
-const setup = (): string => {
-  const urlConnection: string | undefined =
-    process.env.MONGO_INITDB_URL_CONNECTION;
-  if (urlConnection) {
-    return urlConnection;
-  }
-  const mongoParameters: Partial<MongoConnectionParameters> = {
-    databaseName: process.env.MONGO_INITDB_DATABASE,
-    rootUsername: process.env.MONGO_INITDB_ROOT_USERNAME,
-    rootPassword: process.env.MONGO_INITDB_ROOT_PASSWORD,
-    port: process.env.MONGO_INITDB_PORT,
-    hostname: process.env.MONGO_INITDB_HOSTNAME,
-  };
-  return urlConnectionBuilder(mongoParameters);
-};
-
-export const urlConnection: string = setup();
