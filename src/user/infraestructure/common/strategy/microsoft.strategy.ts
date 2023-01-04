@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-microsoft';
+import { MicrosoftOauthConfigService } from '../../implementation/azure/oauth2.0/config';
 
 @Injectable()
 export class MicrosoftStrategy extends PassportStrategy(Strategy, 'azure-ad') {
-  constructor() {
-    super({
-      clientID: process.env.MICROSOFT_CLIENT_ID,
-      clientSecret: process.env.MICROSOFT_SECRET,
-      callbackURL: 'http://localhost:3001/auth/microsoft/redirect',
-      scope: ['user.read'],
-    });
+  constructor(microsoftConfig: MicrosoftOauthConfigService) {
+    super(microsoftConfig.getOauthOptions());
   }
 
   async validate(
