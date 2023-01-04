@@ -15,6 +15,7 @@ import { MicrosoftStrategy } from '../common/strategy/microsoft.strategy';
 import { JwtStrategy } from '../common/strategy/jwt.strategy';
 import { JwtConfigService } from '../implementation/jwt/config';
 import { GoogleOauthConfigService } from '../implementation/gcp/oauth2.0/config';
+import { MicrosoftOauthConfigService } from '../implementation/azure/oauth2.0/config';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { GoogleOauthConfigService } from '../implementation/gcp/oauth2.0/config'
   providers: [
     JwtConfigService,
     GoogleOauthConfigService,
+    MicrosoftOauthConfigService,
     UserService,
     MongoUserRepository,
     Encrypter,
