@@ -7,6 +7,7 @@ import mongoEnvConfig from './user/infraestructure/implementation/mongodb/config
 import jwtEnvConfig from './user/infraestructure/implementation/jwt/config/env.config';
 import oauthGoogleEnvConfig from './user/infraestructure/implementation/gcp/oauth2.0/config/env.config';
 import serverEnvConfig from './user/infraestructure/config/server/env.config';
+import oauthMicrosoftEnvConfig from './user/infraestructure/implementation/azure/oauth2.0/config/env.config';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import serverEnvConfig from './user/infraestructure/config/server/env.config';
         mongoEnvConfig,
         jwtEnvConfig,
         oauthGoogleEnvConfig,
+        oauthMicrosoftEnvConfig,
       ],
       cache: true,
     }),
