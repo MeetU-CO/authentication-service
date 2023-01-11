@@ -7,6 +7,7 @@ import { LoginAuthDTOValidation } from '../validation/dto/login-auth.validation.
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { SignupAuthDTO } from '../../domain/dto/signup-auth.dto';
+import { Delete, Param } from '@nestjs/common/decorators';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -76,5 +77,11 @@ export class AuthController {
     };
     const token = await this.jwtAuthService.signAsync(payload);
     return { ...user, token };
+  }
+
+  @Delete(':email')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteUser(@Param('email') email: string, @Req() req: Request) {
+    return await this.userService.deleteUser(req.user as SignupAuthDTO, email);
   }
 }
