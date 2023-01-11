@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MissingEnvVariablesException } from '../../../../../domain/exception/missing-env-variables.exception';
 import throwExpression from '../../../../../domain/utils/throw-expression';
 import { MicrosoftOauthOptions } from './parameter.config';
 
+@Injectable()
 export class MicrosoftOauthConfigService {
   private static oauthOptions: MicrosoftOauthOptions;
   constructor(private configService: ConfigService) {

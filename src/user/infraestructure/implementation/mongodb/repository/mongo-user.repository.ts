@@ -16,4 +16,10 @@ export class MongoUserRepository implements UserRepository {
   async getByEmail(email: string): Promise<User | null> {
     return this.userModel.findOne({ email: { $eq: email } }).exec();
   }
+  async deleteByEmail(email: string): Promise<boolean> {
+    const res = await this.userModel
+      .deleteOne({ email: { $eq: email } })
+      .exec();
+    return res.deletedCount === 1;
+  }
 }
