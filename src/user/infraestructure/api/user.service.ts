@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { LoginAuthService } from 'src/user/application/service/auth/login-auth.service';
-import { SignupAuthService } from 'src/user/application/service/auth/signup-auth.service';
-import { LoginAuthDTO } from 'src/user/domain/dto/login-auth.dto';
-import { SignupAuthDTO } from 'src/user/domain/dto/signup-auth.dto';
+
+import { LoginAuthService } from '../../application/service/auth/login-auth.service';
 import { OauthService } from '../../application/service/auth/oauth.service';
+import { SignupAuthService } from '../../application/service/auth/signup-auth.service';
 import { DeleteUserService } from '../../application/service/user/delete-user.service';
+import { LoginAuthDTO } from '../../domain/dto/login-auth.dto';
+import { SignupAuthDTO } from '../../domain/dto/signup-auth.dto';
 import { UserNotFoundException } from '../../domain/exception/user-not-found.exception';
 import { Encrypter } from '../implementation/encrypter/bcrypjs.encrypter';
 import { MongoUserRepository } from '../implementation/mongodb/repository/mongo-user.repository';
