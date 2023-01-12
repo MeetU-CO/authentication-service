@@ -1,4 +1,4 @@
-import { UserNotFoundException } from 'src/user/domain/exception/user-not-found.exception';
+import { UserNotFoundException } from '../../../domain/exception/user-not-found.exception';
 import { GetUserService } from './get-user.service';
 
 describe('GetUserService', () => {
@@ -7,6 +7,7 @@ describe('GetUserService', () => {
     getByEmail: jest.fn(async (email) =>
       email === mockUserInDB.email ? mockUserInDB : null,
     ),
+    deleteByEmail: jest.fn(async (email) => true),
   };
   const mockUserInDB = {
     email: 'user@example.com',

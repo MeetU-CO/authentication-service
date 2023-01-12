@@ -1,6 +1,6 @@
-import { UserRepository } from 'src/user/domain/repository/user.repository';
 import { SignupAuthDTO } from '../../../domain/dto/signup-auth.dto';
 import { UnauthorizedException } from '../../../domain/exception/unauthorized.exception';
+import { UserRepository } from '../../../domain/repository/user.repository';
 
 export class DeleteUserService {
   constructor(private readonly userRepository: UserRepository) {}

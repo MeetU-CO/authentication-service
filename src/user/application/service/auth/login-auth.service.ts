@@ -1,8 +1,8 @@
-import { AuthResponseDTO } from 'src/user/domain/dto/auth-response.dto';
-import { LoginAuthDTO } from 'src/user/domain/dto/login-auth.dto';
-import { WrongPasswordOrEmailException } from 'src/user/domain/exception/wrong-password-email.exception';
-import { UserRepository } from 'src/user/domain/repository/user.repository';
-import { PasswordEncrypter } from 'src/user/domain/utils/encrypter';
+import { AuthResponseDTO } from '../../../domain/dto/auth-response.dto';
+import { LoginAuthDTO } from '../../../domain/dto/login-auth.dto';
+import { WrongPasswordOrEmailException } from '../../../domain/exception/wrong-password-email.exception';
+import { UserRepository } from '../../../domain/repository/user.repository';
+import { PasswordEncrypter } from '../../../domain/utils/encrypter';
 import { GetUserService } from '../user/get-user.service';
 
 export class LoginAuthService {

@@ -1,7 +1,7 @@
-import { AuthResponseDTO } from 'src/user/domain/dto/auth-response.dto';
-import { SignupAuthDTO } from 'src/user/domain/dto/signup-auth.dto';
-import { UserRepository } from 'src/user/domain/repository/user.repository';
-import { PasswordEncrypter } from 'src/user/domain/utils/encrypter';
+import { AuthResponseDTO } from '../../../domain/dto/auth-response.dto';
+import { SignupAuthDTO } from '../../../domain/dto/signup-auth.dto';
+import { UserRepository } from '../../../domain/repository/user.repository';
+import { PasswordEncrypter } from '../../../domain/utils/encrypter';
 import { CreateUserService } from '../user/create-user.service';
 
 export class SignupAuthService {

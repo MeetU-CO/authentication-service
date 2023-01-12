@@ -1,6 +1,6 @@
 import { LoginAuthService } from './login-auth.service';
 import { GetUserService } from '../user/get-user.service';
-import { WrongPasswordOrEmailException } from 'src/user/domain/exception/wrong-password-email.exception';
+import { WrongPasswordOrEmailException } from '../../../domain/exception/wrong-password-email.exception';
 
 describe('LoginAuthService', () => {
   const getUserServiceMock = jest
@@ -25,6 +25,7 @@ describe('LoginAuthService', () => {
     getByEmail: jest.fn(async (email) =>
       email === mockUserInDB ? mockUserInDB : null,
     ),
+    deleteByEmail: jest.fn(async (_email) => true),
   };
 
   const loginAuthService: LoginAuthService = new LoginAuthService(

@@ -1,4 +1,4 @@
-import { AlreadyUserExistsException } from 'src/user/domain/exception/already-user-exists.exception';
+import { AlreadyUserExistsException } from '../../../domain/exception/already-user-exists.exception';
 import { CreateUserService } from './create-user.service';
 
 describe('CreateUserService', () => {
@@ -7,6 +7,7 @@ describe('CreateUserService', () => {
     getByEmail: jest.fn(async (email) =>
       email === mockUserInDB.email ? mockUserInDB : null,
     ),
+    deleteByEmail: jest.fn(async (email) => true),
   };
   const mockUserInDB = {
     email: 'user@example.com',

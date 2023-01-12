@@ -4,7 +4,7 @@ import {
   MongooseModuleOptions,
   MongooseOptionsFactory,
 } from '@nestjs/mongoose';
-import { MissingEnvVariablesException } from 'src/user/domain/exception/missing-env-variables.exception';
+import { MissingEnvVariablesException } from '../../../../domain/exception/missing-env-variables.exception';
 import throwExpression from '../../../../domain/utils/throw-expression';
 import { MongoUrlBuilder } from './mongo-url-builder.config';
 import { MongoConnectionParameters } from './parameters.config';
