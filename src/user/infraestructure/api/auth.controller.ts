@@ -7,7 +7,8 @@ import { LoginAuthDTOValidation } from '../validation/dto/login-auth.validation.
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { SignupAuthDTO } from '../../domain/dto/signup-auth.dto';
-import { Delete, Param } from '@nestjs/common/decorators';
+import { Delete, HttpCode, Param } from '@nestjs/common/decorators';
+import { HttpCode as HttpCodes } from '../../domain/repository/entity/http-code.entity';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -30,6 +31,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @HttpCode(HttpCodes.OK)
   async login(@Body() loginAuthDTO: LoginAuthDTOValidation) {
     const userLogged = await this.userService.login(loginAuthDTO);
     const payload = {
