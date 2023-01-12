@@ -25,6 +25,7 @@ describe('SignupAuthService', () => {
     getByEmail: jest.fn(async (email) =>
       email === mockUserInDB.email ? mockUserInDB : null,
     ),
+    deleteByEmail: jest.fn(async (email) => true),
   };
 
   const signupAuthService: SignupAuthService = new SignupAuthService(

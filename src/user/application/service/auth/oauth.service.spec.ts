@@ -16,6 +16,7 @@ describe('OauthService', () => {
     getByEmail: jest.fn(async (email) =>
       email === mockUserInDB.email ? mockUserInDB : null,
     ),
+    deleteByEmail: jest.fn(async (email) => true),
   };
 
   const oauthService: OauthService = new OauthService(mockUserRepository);
