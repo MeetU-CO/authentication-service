@@ -6,6 +6,8 @@ import { MongoUserRepository } from './mongo-user.repository';
 describe('MongoUserRepository', () => {
   let userRepository: MongoUserRepository;
 
+  const emailFromNonExistentUser = 'randomemail@userandom.com';
+
   const mockUser = {
     email: 'user@example.com',
     password: 'hashed',
@@ -20,6 +22,20 @@ describe('MongoUserRepository', () => {
     findOne: jest.fn(() => {
       return {
         exec: async () => mockUser,
+      };
+    }),
+    deleteOne: jest.fn((emailObj) => {
+      if (emailObj.email.$eq === mockUser.email)
+        return {
+          exec: async () => ({
+            deletedCount: 1,
+          }),
+        };
+
+      return {
+        exec: async () => ({
+          deletedCount: 0,
+        }),
       };
     }),
   };
@@ -57,6 +73,16 @@ describe('MongoUserRepository', () => {
   test('MongoUserRepository should return user when look for a new user', async () => {
     expect(await userRepository.getByEmail(mockUser.email)).toStrictEqual(
       mockUser,
+    );
+  });
+
+  test('MongoUserRepository when delete user and user exists then return true', async () => {
+    expect(await userRepository.deleteByEmail(mockUser.email)).toBe(true);
+  });
+
+  test('MongoUserRepository when delete user and user not exists then return false', async () => {
+    expect(await userRepository.deleteByEmail(emailFromNonExistentUser)).toBe(
+      false,
     );
   });
 });
