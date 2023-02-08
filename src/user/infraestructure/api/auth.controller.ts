@@ -7,16 +7,21 @@ import { LoginAuthDTOValidation } from '../validation/dto/login-auth.validation.
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { SignupAuthDTO } from '../../domain/dto/signup-auth.dto';
-import { Delete, HttpCode, Param } from '@nestjs/common/decorators';
+import { Delete, HttpCode, Param, Redirect } from '@nestjs/common/decorators';
 import { HttpCode as HttpCodes } from '../../domain/repository/entity/http-code.entity';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthController {
+  private frontUrl: string;
   constructor(
     private readonly userService: UserService,
     private jwtAuthService: JwtService,
-  ) {}
+    configService: ConfigService,
+  ) {
+    this.frontUrl = configService.get<string>('server.frontEndUrl') as string;
+  }
 
   @Post('signup')
   async signup(@Body() signupAuthDTO: SignupAuthDTOValidation) {
@@ -51,6 +56,7 @@ export class AuthController {
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
+  @Redirect(`http://localhost:3000/auth-callback`)
   async googleAuthRedirect(@Req() req: Request) {
     const user = await this.userService.oauthLogin(req.user as SignupAuthDTO);
     const payload = {
@@ -59,7 +65,12 @@ export class AuthController {
       roles: user.roles ?? [],
     };
     const token = await this.jwtAuthService.signAsync(payload);
-    return { ...user, token };
+
+    const url = new URL(this.frontUrl);
+    url.pathname = '/auth-callback';
+    url.searchParams.set('token', token);
+
+    return { url: url.href };
   }
 
   @Get('microsoft')
@@ -70,6 +81,7 @@ export class AuthController {
 
   @Get('microsoft/redirect')
   @UseGuards(AuthGuard('azure-ad'))
+  @Redirect(`http://localhost:3000/auth-callback`)
   async microsoftAuthRedirect(@Req() req: Request) {
     const user = await this.userService.oauthLogin(req.user as SignupAuthDTO);
     const payload = {
@@ -78,7 +90,11 @@ export class AuthController {
       roles: user.roles ?? [],
     };
     const token = await this.jwtAuthService.signAsync(payload);
-    return { ...user, token };
+    const url = new URL(this.frontUrl);
+    url.pathname = '/auth-callback';
+    url.searchParams.set('token', token);
+
+    return { url: url.href };
   }
 
   @Delete(':email')

@@ -16,6 +16,7 @@ import { JwtStrategy } from '../common/strategy/jwt.strategy';
 import { JwtConfigService } from '../implementation/jwt/config';
 import { GoogleOauthConfigService } from '../implementation/gcp/oauth2.0/config';
 import { MicrosoftOauthConfigService } from '../implementation/azure/oauth2.0/config';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
