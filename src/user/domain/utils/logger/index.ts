@@ -1,3 +1,3 @@
 export interface TransportLogger {
-  createTranport: () => Record<'target' | 'options', any>;
+  createTransport: () => Record<'target' | 'options', any>;
 }

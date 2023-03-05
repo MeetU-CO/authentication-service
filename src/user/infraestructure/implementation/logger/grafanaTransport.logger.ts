@@ -1,7 +1,7 @@
 import { TransportLogger } from '../../../domain/utils/logger';
 export class GrafanaTransport implements TransportLogger {
   constructor(private apiKey: string) {}
-  createTranport() {
+  createTransport() {
     return {
       target: 'pino-loki',
       options: {

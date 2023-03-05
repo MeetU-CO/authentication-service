@@ -41,7 +41,7 @@ import { TransportLogger } from './user/domain/utils/logger';
             customProps: (_req, _res) => ({
               context: 'HTTP',
             }),
-            transport: transport.createTranport(),
+            transport: transport.createTransport(),
           },
         };
       },

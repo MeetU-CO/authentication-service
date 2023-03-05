@@ -1,6 +1,6 @@
 import { TransportLogger } from '../../../domain/utils/logger';
 export class ConsoleTransport implements TransportLogger {
-  createTranport() {
+  createTransport() {
     return {
       target: 'pino-pretty',
       options: {
