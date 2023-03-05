@@ -2,9 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { UserService } from './user.service';
+import { ConfigService } from '@nestjs/config';
 
 describe('AuthController', () => {
   let controller: AuthController;
+
+  jest
+    .spyOn(ConfigService.prototype, 'get')
+    .mockImplementation((_param: string) => frontEndUrl);
 
   jest
     .spyOn(JwtService.prototype, 'signAsync')
@@ -14,6 +19,12 @@ describe('AuthController', () => {
     token: 'example of token',
     email: 'user@example.com',
     name: 'user',
+  };
+
+  const frontEndUrl = 'http://localhost:3000';
+  const tokenUriEncoded = authResponseExpected.token.split(' ').join('+');
+  const oauthResponseExpected = {
+    url: `${frontEndUrl}/auth-callback?token=${tokenUriEncoded}`,
   };
 
   const authResponseDTO = {
@@ -51,6 +62,7 @@ describe('AuthController', () => {
           provide: UserService,
           useValue: mockUserService,
         },
+        ConfigService,
       ],
     }).compile();
 
@@ -86,12 +98,12 @@ describe('AuthController', () => {
   test('AuthController should return authResponse when googleAuthRedirect is successful', async () => {
     expect(
       await controller.googleAuthRedirect(requestMockUser as any),
-    ).toStrictEqual(authResponseExpected);
+    ).toStrictEqual(oauthResponseExpected);
   });
 
   test('AuthController should return authResponse when microsoftAuthRedirect is successful', async () => {
     expect(
       await controller.microsoftAuthRedirect(requestMockUser as any),
-    ).toStrictEqual(authResponseExpected);
+    ).toStrictEqual(oauthResponseExpected);
   });
 });
